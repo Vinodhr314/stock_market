@@ -20,12 +20,17 @@ for filename in filenames:
     # Get the active worksheet
     sheet = wb.active
 
+    # Clear the content from column O to Z (inclusive)
+    for row in sheet.iter_rows():
+        for cell in row[14:]:  # Start from column O (index 14)
+            cell.value = None
+
     # Insert new columns
     columns = [
-        ('OPEN-CLOSE', 15),
+        ('CLOSE-OPEN', 15),
         ('HIGH-OPEN', 16),
         ('LOW-OPEN', 17),
-        ('CLOSE-CLOSE', 18),
+        ('TCLOSE-PCLOSE', 18),
         ('HIGH-LOW', 19)
     ]
     for name, index in columns:
@@ -36,7 +41,7 @@ for filename in filenames:
     for row in range(2, sheet.max_row + 1):
         # Iterate through each calculation and handle missing values consistently
         for col1, col2, target_col in [
-            (3, 8, 15),  # Close-Open
+            (8, 3, 15),  # Close-Open
             (4, 3, 16),  # High-Open
             (5, 3, 17),  # Low-Open
             (8, 6, 18),  # Close-Close
